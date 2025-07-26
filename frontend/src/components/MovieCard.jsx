@@ -1,10 +1,43 @@
 import { Link } from "react-router-dom";
+import { useState } from "react";
 
 const MovieCard = ({ movie }) => {
+  const [isFavorite, setIsFavorite] = useState(checkIfFavorite(movie.id));
+
+  // Check if the movie is already in favorites
+  function checkIfFavorite(id) {
+    const favs = JSON.parse(localStorage.getItem("favorites")) || [];
+    return favs.some((m) => m.id === id);
+  }
+
+  // Handle Add/Remove Favorite
+  const handleFavoriteClick = () => {
+    const favs = JSON.parse(localStorage.getItem("favorites")) || [];
+
+    let updatedFavs;
+
+    if (isFavorite) {
+      // Remove from favorites
+      updatedFavs = favs.filter((m) => m.id !== movie.id);
+    } else {
+      // Add to favorites
+      updatedFavs = [...favs, movie];
+    }
+
+    localStorage.setItem("favorites", JSON.stringify(updatedFavs));
+    setIsFavorite(!isFavorite);
+  };
+
   return (
     <div className="bg-white border border-gray-200 rounded-2xl shadow-md hover:shadow-xl transition duration-300 p-6 flex flex-col justify-between h-full">
       <div>
-        <h2 className="text-2xl font-bold text-gray-800 mb-1">{movie.title}</h2>
+        <div className="flex justify-between items-center">
+          <h2 className="text-2xl font-bold text-gray-800 mb-1">{movie.title}</h2>
+          <button onClick={handleFavoriteClick} style={{ cursor: "pointer", fontSize: "20px" }}>
+            {isFavorite ? "💖" : "💓"}
+          </button>
+        </div>
+
         <p className="text-sm text-gray-500 mb-2">Released: {movie.release_year}</p>
 
         {/* Rating */}

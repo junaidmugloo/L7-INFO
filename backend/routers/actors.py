@@ -60,7 +60,7 @@ def get_actors_by_filters(
     if age:
         query = query.filter(models.Actor.dob == age)  # Use `.age`, not `.bio`, if filtering by age
 
-    results = query.all()
+    results = query
 
     if not results:
         raise HTTPException(status_code=404, detail="No actors found matching filters")
