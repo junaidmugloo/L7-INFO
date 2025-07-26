@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { LucideHeart, LucideHeartOff, LucideScanHeart } from "lucide-react";
 
 const MovieCard = ({ movie }) => {
   const [isFavorite, setIsFavorite] = useState(checkIfFavorite(movie.id));
@@ -29,12 +30,12 @@ const MovieCard = ({ movie }) => {
   };
 
   return (
-    <div className="bg-white border border-gray-200 rounded-2xl shadow-md hover:shadow-xl transition duration-300 p-6 flex flex-col justify-between h-full">
+    <div className="bg-white border border-gray-200 rounded-2xl shadow-md hover:shadow-xxl transition duration-300 p-6 flex flex-col justify-between h-full">
       <div>
         <div className="flex justify-between items-center">
           <h2 className="text-2xl font-bold text-gray-800 mb-1">{movie.title}</h2>
           <button onClick={handleFavoriteClick} style={{ cursor: "pointer", fontSize: "20px" }}>
-            {isFavorite ? "💖" : "💓"}
+            {isFavorite ? <LucideHeart style={{ fill: "black" }}/> :<LucideHeart/>  }
           </button>
         </div>
 
@@ -66,7 +67,7 @@ const MovieCard = ({ movie }) => {
 
       <Link
         to={`/movies/${movie.id}`}
-        className="mt-4 text-center bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-semibold"
+        className="mt-4 text-center bg-blue-600 hover:bg-blue-300 text-white px-4 py-2 rounded-lg text-sm font-semibold"
       >
         View Details
       </Link>

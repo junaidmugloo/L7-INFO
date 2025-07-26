@@ -6,7 +6,7 @@ const Navbar = () => {
       <h1 className="text-2xl font-bold">🎬 Movie Explorer</h1>
       <div className="space-x-4">
         <Link to="/">Home</Link>
-        <Link to="fav">Favorite</Link>
+        <Link to="/fav">Favorite</Link>
       </div>
     </nav>
   );
