@@ -1,6 +1,6 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException,Query
 from sqlalchemy.orm import Session
-from typing import List
+from typing import List,Optional
 
 from app import models, schemas
 from app.database import SessionLocal
@@ -39,6 +39,33 @@ def get_actor(actor_id: int, db: Session = Depends(get_db)):
     if not actor:
         raise HTTPException(status_code=404, detail="Actor not found")
     return actor
+
+# first get aynthing on name var
+# check what is in the name 
+# try to compare name with all fields for table if it match filter result
+# or send not found 
+
+
+
+@router.get("/filters/", response_model=List[schemas.Actor])
+def get_actors_by_filters(
+    name: Optional[str] = Query(None, description="Filter by actor name"),
+    age: Optional[int] = Query(None, description="Filter by actor age"),  # Assuming age is an int
+    db: Session = Depends(get_db)
+):
+    query = db.query(models.Actor)
+
+    if name:
+        query = query.filter(models.Actor.name.ilike(f"%{name}%"))  # case-insensitive partial match
+    if age:
+        query = query.filter(models.Actor.dob == age)  # Use `.age`, not `.bio`, if filtering by age
+
+    results = query.all()
+
+    if not results:
+        raise HTTPException(status_code=404, detail="No actors found matching filters")
+
+    return results
 
 
 # Update Actor
